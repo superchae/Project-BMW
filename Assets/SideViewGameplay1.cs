@@ -16,7 +16,7 @@ public class SideViewGameplay1 : MonoBehaviour
 
     private void Awake()
     {
-        skillValue = 60;
+        skillValue = 95;
         playerHealth = 3;
         coin = 0;
         currentView = "side";

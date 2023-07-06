@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
 
     // Chaser(Health(Distance) Decrease) System
     [SerializeField] int healthDecrease;
+    bool isGodMode = false;
 
     // Start is called before the first frame update
     private void Start()
@@ -131,15 +132,25 @@ public class PlayerController : MonoBehaviour
         if (skillGauge.value == 100)
         {
             Debug.Log("Skill~~~~~~~");
-
             //Skill Demo(Cat Skill)
-            if(playerHealth < maxHealth)
+            if(SideViewGameplay1.sideViewGameplay1.playerHealth < maxHealth)
             {
-                playerHealth++;
+                SideViewGameplay1.sideViewGameplay1.playerHealth++;
             }
+            //Skill Demo(Mouse Skill)
+            // make clones~~~~
+
+            //Skill Demo(Siba Skill)
+            isGodMode = true;
+            Invoke("returnToNormalMode", 5);
 
             skillGauge.value = 0;
         }
+    }
+
+    void returnToNormalMode()
+    {
+        isGodMode = false;
     }
     
     private void CheckGround()
@@ -199,11 +210,11 @@ public class PlayerController : MonoBehaviour
     IEnumerator AfterCollisionImmune()
     {
         Debug.Log("immune subroutine started");
-        capsuleCollider.isTrigger = true;
+        // capsuleCollider.isTrigger = true;
         Debug.Log("isTrigger setted True");
         
         yield return new WaitForSeconds(immuneTime);
-        capsuleCollider.isTrigger = false;
+        // capsuleCollider.isTrigger = false;
         Debug.Log("isTrigger setted False");
     }
 
@@ -212,7 +223,12 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.gameObject.CompareTag("Obstacle"))
         {
             BoxCollider boxCollider = collision.collider.gameObject.GetComponent<BoxCollider>();
-            boxCollider.isTrigger = true;
+            if(isGodMode == true) {
+                boxCollider.isTrigger = true;
+                Destroy(collision.gameObject, 0.2f);
+                return;
+            }
+            // boxCollider.isTrigger = true;
             Destroy(collision.gameObject, 0.2f);
 
             float playerYPosition = player.transform.position.y;
@@ -271,7 +287,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-        capsuleCollider.isTrigger = false;
+        // capsuleCollider.isTrigger = false;
     }
 
 
